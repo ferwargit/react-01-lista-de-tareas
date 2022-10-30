@@ -336,4 +336,77 @@ export default function TodoApp() {
 ```
 Renderiza en tiempo real  
 
-![](./img/map.jpg)
+![](./img/map.jpg)  
+# Creamos otro nuevo componente Todo.jsx  
+```jsx
+export default function Todo(props) {
+    return (
+        <div>{props.item.title}</div>
+    );
+};
+```
+Desestructuramos, de esta manera evitamos los props y vamos directamente con la propiedad.
+```jsx
+export default function Todo({item}) {
+    return (
+        <div>{item.title}</div>
+    );
+};
+```
+Ahora vamos a usar el componente.   
+Lo vamos a utilizar y va a reemplazar en TodoApp.jsx a la linea
+```jsx
+<div key={item.id}>{item.title}</div>
+```
+TodoApp.jsx
+```jsx
+import { useState } from "react";
+import Todo from "./Todo";
+
+export default function TodoApp() {
+  const [title, setTitle] = useState("Hola");
+  const [todos, setTodos] = useState([]);
+
+  function handleChange(event) {
+    const value = event.target.value;
+    setTitle(value);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const newTodo = {
+        id: crypto.randomUUID(),
+        title: title,
+        completed: false
+    }
+
+    const temp = [...todos];
+    temp.unshift(newTodo);
+
+    setTodos(temp);
+  }
+
+  return (
+    <div className="todoContainer">
+      <form className="todoCreateForm" onSubmit={handleSubmit}>
+        <input onChange={handleChange} className="todoInput" value={title} />
+        <input
+          onClick={handleSubmit}
+          type="submit"
+          value="Create todo"
+          className="buttonCreate"
+        />
+      </form>
+      <div className="todoContainer">
+        {todos.map((item) => (
+          <Todo key={item.id} item={item}/>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+Todo lo relacionado a un todo va a estar en Todo.jsx
+# Botón Editar
+Voy a crear un botón en el componente Todo.jsx para editar.

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Todo from "./Todo";
 
+import './todoApp.css';
+
 export default function TodoApp() {
   const [title, setTitle] = useState("Hola");
   const [todos, setTodos] = useState([]);
